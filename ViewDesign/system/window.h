@@ -1,93 +1,43 @@
 #pragma once
 
-#include "ViewDesign/view/ViewBase.h"
-#include "ViewDesign/drawing/surface.h"
+#include "ViewDesign/common/unicode.h"
+#include "ViewDesign/system/cursor.h"
 
 
 namespace ViewDesign {
 
+class Window;
 
-class Window : public ViewBase {
-private:
-	friend class Desktop;
-	friend struct WindowPrivateAccess;
 
-public:
-	Window(Handle window, view_ptr_any child);
-	Window(const u16string& title, view_ptr_any child);
-	virtual ~Window() override;
+Handle CreateWindow(const u16string& title);
+void AttachWindow(Handle window, Window& view);
+void DestroyWindow(Handle window);
 
-	// style
-public:
-	void SetTitle(const u16string& title);
-	void SetIcon(const void* buffer, size_t size);
-	void ClearIcon();
+Scale GetWindowScale(Handle window);
 
-	// surface
-private:
-	Surface surface;
-public:
-	Handle GetHandle() const { return surface.GetWindow(); }
+void SetWindowTitle(Handle window, const u16string& title);
+void SetWindowIcon(Handle window, const void* buffer, size_t size);
+void ClearWindowIcon(Handle window);
+void SetWindowRegion(Handle window, RectI region);
+void SetWindowOpacity(Handle window, float opacity);
+void SetWindowCursor(Handle window, std::reference_wrapper<Cursor> cursor);
 
-	// metrics
-private:
-	PointI point;
-	Scale scale;
-protected:
-	PointI GetPixelPoint() const { return point; }
-	SizeU GetPixelSize() const { return surface.GetSize(); }
-	RectI GetPixelRegion() const { return RectI(GetPixelPoint(), GetPixelSize()); }
-	Scale GetScale() const { return scale; }
-private:
-	void SetPixelPoint(PointI point) { this->point = point; }
-	void SetPixelSize(SizeU size) { if (GetPixelSize() != size) { surface.Resize(size); UpdateChildSizeRef(child, size / scale); Redraw(rect_infinite); } }
-	void SetScale(Scale scale) { this->scale = scale; }
+void ShowWindow(Handle window);
+void HideWindow(Handle window);
+void MinimizeWindow(Handle window);
+void MaximizeWindow(Handle window);
+void RestoreWindow(Handle window);
+void CloseWindow(Handle window);
 
-	// state
-public:
-	enum class State { Normal, Minimized, Maximized };
-private:
-	State state = State::Normal;
-private:
-	void SetState(State state) { if (this->state != state) { this->state = state; OnStateChange(state); } }
-public:
-	State GetState() { return state; }
-protected:
-	virtual void OnStateChange(State state) {}
-public:
-	void Show();
-	void Hide();
-	void Minimize();
-	void Maximize();
-	void Restore();
-	void Close();
+void RedrawWindowRegion(Handle window, RectI region);
 
-	// child
-protected:
-	view_ptr_any child;
+void SetWindowCapture(Handle window);
+void ReleaseWindowCapture(Handle window);
+void SetWindowFocus(Handle window);
 
-	// layout
-protected:
-	Point GetPoint() const { return GetPixelPoint() / GetScale(); }
-protected:
-	void RegionUpdated(Rect region);
-protected:
-	virtual std::pair<Size, Size> CalculateMinMaxSize(Size size_ref) { return { size_empty, size_ref }; }
-	virtual Rect OnWindowSizeRefUpdate(Size size_ref) { return Rect(point_zero, UpdateChildSizeRef(child, size_ref)); }
-	virtual void OnChildSizeUpdate(ViewBase& child, Size child_size) override {}
-
-	// drawing
-protected:
-	void Draw();
-	void Redraw(Rect redraw_region);
-protected:
-	virtual void OnDraw(Canvas& canvas, Rect draw_region) override { DrawChild(child, point_zero, canvas, draw_region); }
-	virtual void OnChildRedraw(ViewBase& child, Rect child_redraw_region) override { Redraw(child_redraw_region); }
-
-	// event
-protected:
-	virtual ref_ptr<ViewBase> HitTest(MouseEvent& event) override { return HitTestChild(child, event); }
-};
+void ImeWindowEnable(Handle window);
+void ImeWindowDisable(Handle window);
+void ImeWindowSetPosition(Handle window, PointI point);
 
 
 } // namespace ViewDesign
