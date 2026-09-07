@@ -4,9 +4,9 @@ on:
   schedule:
     - cron: '0 3 * * *'
   push:
-    branches: [main]
+    branches: [main, BuildEx]
   pull_request:
-    branches: [main]
+    branches: [main, BuildEx]
   workflow_dispatch:
 
 jobs:
@@ -21,8 +21,14 @@ jobs:
         with:
           arch: x64
 
+      - uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgJsonGlob: 'vcpkg.json'
+
       - name: Configure
         shell: cmd
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}\vcpkg
         run: |
           copy CMakeUserPresets.example.json CMakeUserPresets.json
           cmake --preset ninja-windows-msvc-x64-debug-win32-directx
@@ -34,15 +40,23 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: examples-ninja-msvc
-          path: build/ninja-windows-msvc-x64-debug-win32-directx/Example/**/*.exe
+          path: |
+            build/ninja-windows-msvc-x64-debug-win32-directx/Example/**/*.exe
+            build/ninja-windows-msvc-x64-debug-win32-directx/Example/**/*.dll
 
   windows-vs2026:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
+      - uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgJsonGlob: 'vcpkg.json'
+
       - name: Configure
         shell: cmd
+        env:
+          VCPKG_ROOT: ${{ github.workspace }}\vcpkg
         run: |
           copy CMakeUserPresets.example.json CMakeUserPresets.json
           cmake --preset vs2026-windows-msvc-x64-debug-win32-directx
@@ -54,7 +68,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: examples-vs2026
-          path: build/vs2026-windows-msvc-x64-debug-win32-directx/Example/**/*.exe
+          path: |
+            build/vs2026-windows-msvc-x64-debug-win32-directx/Example/**/*.exe
+            build/vs2026-windows-msvc-x64-debug-win32-directx/Example/**/*.dll
 
   linux-glfw-opengl:
     if: false
@@ -109,4 +125,3 @@ jobs:
         run: |
           export LD_LIBRARY_PATH="${ICU_ROOT}/lib"
           cmake --build build/ninja-linux-gcc-debug-glfw-opengl
-          
