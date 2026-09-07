@@ -1,12 +1,12 @@
-name: Run test
+name: make sure all work
 
 on:
   schedule:
     - cron: '0 3 * * *'
   push:
-    branches: [main, BuildEx]
+    branches: [main, qol/ghActions, feat/imageURL, feat/WindowIcon]
   pull_request:
-    branches: [main, BuildEx]
+    branches: [main, qol/ghActions, feat/imageURL, feat/WindowIcon]
   workflow_dispatch:
 
 jobs:
