@@ -4,9 +4,9 @@ on:
   schedule:
     - cron: '0 3 * * *'
   push:
-    branches: [test, main, qol/ghActions, feat/imageURL, feat/WindowIcon]
+    branches: [test, main, qol/ghActions, feat/imageURL, feat/WindowIcon, imgUrl2]
   pull_request:
-    branches: [test, main, qol/ghActions, feat/imageURL, feat/WindowIcon]
+    branches: [test, main, qol/ghActions, feat/imageURL, feat/WindowIcon, imgUrl2]
   workflow_dispatch:
 
 jobs:
