@@ -9,11 +9,21 @@
         "msvc-x64",
         "debug",
         "win32-directx"
+      ]
+    },
+    {
+      "name": "ninja-windows-msvc-x64-debug-win32-directx-curl",
+      "displayName": "Ninja Windows MSVC x64 Debug (Backend: Win32-DirectX, with curl)",
+      "inherits": [
+        "ninja",
+        "msvc-x64",
+        "debug",
+        "win32-directx"
       ],
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "VCPKG_TARGET_TRIPLET": "x64-windows",
-        "VCPKG_MANIFEST_FEATURES": "win32-directx"
+        "VCPKG_MANIFEST_FEATURES": "win32-directx-curl"
       }
     },
     {
@@ -24,12 +34,7 @@
         "msvc-x64",
         "release",
         "win32-directx"
-      ],
-      "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_TARGET_TRIPLET": "x64-windows",
-        "VCPKG_MANIFEST_FEATURES": "win32-directx"
-      }
+      ]
     },
     {
       "name": "ninja-windows-msvc-x86-debug-win32-directx",
@@ -39,12 +44,7 @@
         "msvc-x86",
         "debug",
         "win32-directx"
-      ],
-      "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_TARGET_TRIPLET": "x86-windows",
-        "VCPKG_MANIFEST_FEATURES": "win32-directx"
-      }
+      ]
     },
     {
       "name": "vs2026-windows-msvc-x64-debug-win32-directx",
@@ -54,12 +54,7 @@
         "msvc-x64",
         "debug",
         "win32-directx"
-      ],
-      "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_TARGET_TRIPLET": "x64-windows",
-        "VCPKG_MANIFEST_FEATURES": "win32-directx"
-      }
+      ]
     },
     {
       "name": "ninja-windows-mingw-gcc-x64-debug-win32-directx",
