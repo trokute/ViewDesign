@@ -15,3 +15,8 @@ if (MSVC)
 endif()
 
 add_subdirectory(vulkan)
+
+find_package(CURL QUIET)
+if (CURL_FOUND)
+    add_subdirectory(curl)
+endif()
