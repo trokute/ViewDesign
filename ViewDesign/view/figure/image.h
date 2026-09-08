@@ -17,10 +17,9 @@ class Image : Uncopyable {
 public:
 	Image(const u16string& filename);
 	Image(const void* buffer, size_t size);
+	Image(const std::vector<unsigned char>& buffer) : Image(buffer.data(), buffer.size()) {}
 	Image(const std::string& url);
 	~Image();
-private:
-	Image(const std::vector<unsigned char>& buffer) : Image(buffer.data(), buffer.size()) {}
 protected:
 	Handle source;
 	SizeU size;
