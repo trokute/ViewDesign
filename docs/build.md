@@ -149,7 +149,7 @@ The following platform packages will be searched and included automatically.
 
 *required for `-OpenGL` or `-Vulkan` backends when `Image` or `ImageView` are referenced*
 
-### curl (https://curl.se/libcurl.html)
+### curl (https://curl.se/)
 
 > The library *libcurl* is used to support loading an `Image` directly from a URL.
 
